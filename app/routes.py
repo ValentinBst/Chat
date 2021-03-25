@@ -69,12 +69,9 @@ def login():
     if len(players_avec_ce_password) == 0:
         return "Mot de passe non existant", 401
 
-    print(players_avec_ce_password[0]["players_id"])
-
     thisdict = {
         "id" : (players_avec_ce_password[0]["players_id"])
     }
-
     return jsonify(thisdict), 200
 
 
@@ -118,7 +115,15 @@ def rooms_handling(players_id):
 
 def get_rooms_request(players_id):
 
-    request_sql = f'''SELECT rooms_id  '''
+    request_sql = f'''SELECT * FROM rooms WHERE players_id = {players_id}'''
+    rooms = sql_select(request_sql)
+    print(rooms)
+
+    for player in rooms:
+
+
+
+
     return "Not implemented", 501
 
 
