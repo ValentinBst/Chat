@@ -6,6 +6,7 @@ from flask import jsonify
 
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
+
 def index():
     #requête pour récupérer les joueurs
     request_sql = f'''SELECT players_id, players_pseudo 
@@ -74,9 +75,6 @@ def login():
     }
     return jsonify(thisdict), 200
 
-
-    return "Not implemented", 501
-
 @app.route('/signup', methods=['POST'])
 def sign_up():
     #on récupère le json envoyé par le client
@@ -114,17 +112,15 @@ def rooms_handling(players_id):
 
 
 def get_rooms_request(players_id):
-
-    request_sql = f'''SELECT * FROM rooms WHERE players_id = {players_id}'''
-    rooms = sql_select(request_sql)
-    print(rooms)
-
-    for player in rooms:
+    sql_request = f'''SELECT * FROM rooms WHERE players_id = "{players_id}"'''
+    room_du_joueur = sql_select(sql_request)
+    print(room_du_joueur)
 
 
-
-
-    return "Not implemented", 501
+    for room in room_du_joueur:
+        sql_request = f'''SELECT * FROM cats WHERE rooms_id = {room["rooms_id"]}'''
+        room["cats"] = sql_select(sql_request)
+    return jsonify(room_du_joueur), 200
 
 
 def add_room_request(players_id, request_json):
